@@ -24,6 +24,7 @@ public class AnvilMenuMixin {
 
     @Shadow @Final private DataSlot cost;
 
+    // createResult -> 本番環境の名前(m_38895_)に自動変換されるよう指定
     @ModifyConstant(method = "createResult", constant = @Constant(intValue = 40))
     private int removeTooExpensiveLimit(int original) {
         return 1000000;
@@ -34,7 +35,8 @@ public class AnvilMenuMixin {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/Enchantment;getMaxLevel()I")
     )
     private int redirectMaxLevel(Enchantment instance) {
-        if (instance == Enchantments.MENDING || instance == Enchantments.SILK_TOUCH || instance == Enchantments.AQUA_AFFINITY || instance == Enchantments.BINDING_CURSE || instance == Enchantments.INFINITY_ARROWS || instance == Enchantments.VANISHING_CURSE || instance == ModEnchantment.UNBREAKABLE.get()) {
+        if (instance == Enchantments.MENDING || instance == Enchantments.SILK_TOUCH || instance == Enchantments.AQUA_AFFINITY || instance == Enchantments.BINDING_CURSE || instance == Enchantments.INFINITY_ARROWS || instance == Enchantments.VANISHING_CURSE ||
+                (ModEnchantment.UNBREAKABLE.isPresent() && instance == ModEnchantment.UNBREAKABLE.get())) {
             return 1;
         }
         if (instance == Enchantments.KNOCKBACK || instance == Enchantments.PUNCH_ARROWS) {
@@ -54,32 +56,27 @@ public class AnvilMenuMixin {
     @Inject(method = "createResult", at = @At("TAIL"))
     private void finalizeAnvilResult(CallbackInfo ci) {
         AnvilMenu menu = (AnvilMenu)(Object)this;
+        // getSlot(0)や(2)も本番では名前が変わることがあるため注意
         ItemStack left = menu.getSlot(0).getItem();
         ItemStack result = menu.getSlot(2).getItem();
 
         if (result.isEmpty()) return;
 
-        // 【重要】エンチャントが実際に進化したかをチェック
         Map<Enchantment, Integer> leftEnchants = EnchantmentHelper.getEnchantments(left);
         Map<Enchantment, Integer> resultEnchants = EnchantmentHelper.getEnchantments(result);
 
-        // 1. エンチャントの内容が変わっていない
-        // 2. 耐久値も回復していない（修理ではない）
-        // 3. 名前も変わっていない
-        // この3つが揃ったら、それは「無意味な合成（10+10など）」なので出力を消す
         boolean isEnchantUpdated = !leftEnchants.equals(resultEnchants);
         boolean isRepaired = result.getDamageValue() < left.getDamageValue();
         boolean isRenamed = result.hasCustomHoverName() && !result.getHoverName().equals(left.getHoverName());
 
         if (!isEnchantUpdated && !isRepaired && !isRenamed) {
-            menu.getSlot(2).set(ItemStack.EMPTY); // 結果スロットを空にする（×印が出る）
+            menu.getSlot(2).set(ItemStack.EMPTY);
             this.cost.set(0);
             return;
         }
 
-        // コストを30に固定し、ペナルティをリセットする
-        if (this.cost.get() > 10) {
-            this.cost.set(10);
+        if (this.cost.get() > 30) {
+            this.cost.set(30);
         }
         result.setRepairCost(0);
     }
