@@ -75,8 +75,8 @@ public class AnvilMenuMixin {
             return;
         }
 
-        if (this.cost.get() > 30) {
-            this.cost.set(30);
+        if (this.cost.get() > 10) {
+            this.cost.set(10);
         }
         result.setRepairCost(0);
     }
