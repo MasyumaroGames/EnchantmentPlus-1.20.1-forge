@@ -4,8 +4,9 @@
   "package": "com.github.masyu.enchant.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "ItemStackMixin",
     "EnchantmentMixin",
-    "EnchantmentMixin"
+    "AnvilMenuMixin"
   ],
   "injectors": {
     "defaultRequire": 1

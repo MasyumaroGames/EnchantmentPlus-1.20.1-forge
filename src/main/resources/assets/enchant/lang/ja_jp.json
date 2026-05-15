@@ -1,4 +1,9 @@
 {
   "itemGroup.enchant_main": "エンチャント+",
-  "enchantment.enchant.unbreakable": "不可壊"
+  "enchantment.enchant.unbreakable": "不可壊",
+  "enchantment.level.6": "VI",
+  "enchantment.level.7": "VII",
+  "enchantment.level.8": "VIII",
+  "enchantment.level.9": "IX",
+  "enchantment.level.10": "X"
 }

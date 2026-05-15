@@ -1,4 +1,9 @@
 {
   "itemGroup.enchant_main": "Enchantment Plus",
-  "enchantment.enchant.unbreakable": "Unbreakable"
+  "enchantment.enchant.unbreakable": "Unbreakable",
+  "enchantment.level.6": "VI",
+  "enchantment.level.7": "VII",
+  "enchantment.level.8": "VIII",
+  "enchantment.level.9": "IX",
+  "enchantment.level.10": "X"
 }

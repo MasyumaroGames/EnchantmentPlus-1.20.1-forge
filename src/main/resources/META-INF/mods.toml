@@ -16,6 +16,7 @@ license="${mod_license}"
 # set this to true, and Forge will set the correct displayTest for you and skip loading your mod on dedicated servers.
 #clientSideOnly=true #optional - defaults to false if absent
 # A list of mods - how many allowed here is determined by the individual mod loader
+
 [[mods]] #mandatory
 # The modid of the mod
 modId="enchant" #mandatory
@@ -44,7 +45,7 @@ authors="MasyumaroGames" #optional
 # The description text for the mod (multi line!) (#mandatory)
 description='''We will be expanding the enchantment system.'''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
-[[dependencies.${mod_id}]] #optional
+[[dependencies.enchant]] #optional
     # the modid of the dependency
     modId="forge" #mandatory
     # Does this dependency have to exist - if not, ordering below must be specified
@@ -58,7 +59,7 @@ description='''We will be expanding the enchantment system.'''
     # Side this dependency is applied on - BOTH, CLIENT, or SERVER
     side="BOTH"
 # Here's another dependency
-[[dependencies.${mod_id}]]
+[[dependencies.enchant]]
     modId="minecraft"
     mandatory=true
     # This version range declares a minimum of the current minecraft version up to but not including the next major version
@@ -72,5 +73,4 @@ description='''We will be expanding the enchantment system.'''
 #[features.${mod_id}]
 #openGLVersion="[3.2,)"
 
-[[mixins]]
-config="enchantplus.mixins.json"
+MixinConfigs="enchant.mixins.json"
